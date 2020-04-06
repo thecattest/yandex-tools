@@ -6,7 +6,7 @@ solution_id - id решения задачи
 user_id - id пользователя
 
 https://lyceum.yandex.ru/api/student/lessonTasks?courseId=course_id&lessonId=lesson_id		Получить информацию о задачах урока
-https://lyceum.yandex.ru/api/student/lessons/lesson_id?courseId=course_id&groupId=lesson_id		Получить краткую инфу об уроку
+https://lyceum.yandex.ru/api/student/lessons/lesson_id?courseId=course_id&groupId=lesson_id		Получить краткую инфу об уроке
 https://lyceum.yandex.ru/api/student/tasks/task_id?groupId=group_id				Получить задачу по её task_id
 
 https://lyceum.yandex.ru/api/student/lessons?courseId=&groupId=group_id			Получить все открытые уроки курса

@@ -13,19 +13,21 @@ def save_solutions(solutions, dir):
             continue
         lesson_path = os.path.join(dir, lesson_title)
         os.mkdir(lesson_path)
-        for title in solutions[lesson_title]:
-            solution_path = os.path.join(lesson_path, title)
-            code, encoding, byte = solutions[lesson_title][title]
-            if byte:
-                with open(solution_path, 'wb') as file:
-                    file.write(code)
-            else:
-                with open(solution_path, 'wt', encoding=encoding) as file:
-                    file.write(code)
+        for type in solutions[lesson_title]:
+            type_path = os.path.join(lesson_path, type)
+            os.mkdir(type_path)
+            for title in solutions[lesson_title][type]:
+                solution_path = os.path.join(type_path, title)
+                code, encoding, byte = solutions[lesson_title][type][title]
+                if byte:
+                    with open(solution_path, 'wb') as file:
+                        file.write(code)
+                else:
+                    with open(solution_path, 'wt', encoding=encoding) as file:
+                        file.write(code)
 
 
 s = requests.Session()
-
 login = input('Login: ')
 password = input('Password: ')
 dir = input('Директория для сохранения решений: ')
@@ -36,13 +38,14 @@ ids = get_courses_groups_ids(s)[1]
 course_id = ids['course_id']
 group_id = ids['group_id']
 
-lesson_ids = get_lesson_ids(s, course_id, group_id)[9:12]
+lesson_ids = get_lesson_ids(s, course_id, group_id)[20:24]
 solutions = dict()
-titles = {'classwork': '###Классная работа',
-          'homework': '##Домашняя работа',
-          'additional': '#Дополнительные задачи',
+titles = {'classwork': 'Классная работа',
+          'homework': 'Домашняя работа',
+          'additional': 'Дополнительные задачи',
           'control-work': 'Контрольная',
           'individual-work': 'Самостоятельная работа'}
+symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
 
 for lesson_id in lesson_ids:
     title = get_lesson_info(s, lesson_id, group_id, course_id)['title']
@@ -52,10 +55,12 @@ for lesson_id in lesson_ids:
     for tasks_type in all_tasks:
         type = tasks_type['type']
         type_title = titles[type]
+        solutions[title][type_title] = dict()
 
         for task in tasks_type['tasks']:
             if not task['solution'] is None:
                 task_solution = get_solution(s, task['solution']['id'])
+                task_title = task['title']
                 file = task_solution['file']
                 if not file is None:
                     encoding = file['encoding']
@@ -66,8 +71,9 @@ for lesson_id in lesson_ids:
                     else:
                         code = requests.get(file['url']).content
                         byte = 1
-                    task_title = task['title'].replace('?', '')
-                    solutions[title][type_title + ' - ' + task_title + '.' + file_type] = [code, encoding, byte]
+                    for sym in symb:
+                        task_title = task_title.replace(sym, ' ')
+                    solutions[title][type_title][task_title + '.' + file_type] = [code, encoding, byte]
     print(f"Урок \"{title}\" скачан")
 
 save_solutions(solutions, dir)
