@@ -6,9 +6,10 @@ s = requests.Session()
 
 login = input('Login: ')
 password = input('Password: ')
+course = int(input('Your course(1/2): ')) - 1
 auth(s, login, password)
 
-ids = get_courses_groups_ids(s)[1]
+ids = get_courses_groups_ids(s)[course]
 course_id = ids['course_id']
 group_id = ids['group_id']
 

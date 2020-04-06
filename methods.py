@@ -1,3 +1,10 @@
+titles = {'classwork': 'Классная работа',
+          'homework': 'Домашняя работа',
+          'additional': 'Дополнительные задачи',
+          'control-work': 'Контрольная',
+          'individual-work': 'Самостоятельная работа'}
+
+
 def auth(s, login, password):
     auth = s.post('https://passport.yandex.ru/passport?mode=auth',
                   data={'login': login, 'passwd': password})

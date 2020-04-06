@@ -1,5 +1,4 @@
 import requests
-from pprint import pprint
 import os
 
 from methods import *
@@ -30,29 +29,31 @@ def save_solutions(solutions, dir):
                     print(e, solution_path, code, encoding, sep='\n', end='\n\n\n\n===================\n')
 
 
+solutions = dict()
+symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
+
+
 s = requests.Session()
 login = input('Login: ')
 password = input('Password: ')
+course = int(input('Your course(1/2): ')) - 1
 dir = input('Директория для сохранения решений: ')
+for sym in symb:
+    dir = dir.replace(sym, ' ')
 print('(пожалуйста будьте sure что папки не существует или она пустая, \nа иначе я за себя не ручаюсь)')
 auth(s, login, password)
 
-ids = get_courses_groups_ids(s)[1]
+ids = get_courses_groups_ids(s)[course]
 course_id = ids['course_id']
 group_id = ids['group_id']
 
 lesson_ids = get_lesson_ids(s, course_id, group_id)
-solutions = dict()
-titles = {'classwork': 'Классная работа',
-          'homework': 'Домашняя работа',
-          'additional': 'Дополнительные задачи',
-          'control-work': 'Контрольная',
-          'individual-work': 'Самостоятельная работа'}
-symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
 
 for lesson_n, lesson_id in enumerate(lesson_ids):
     title = get_lesson_info(s, lesson_id, group_id, course_id)['title']
     title = str(lesson_n) + '. ' + title
+    for sym in symb:
+        title = title.replace(sym, ' ')
     solutions[title] = {}
     all_tasks = get_all_tasks(s, lesson_id, course_id)
 
