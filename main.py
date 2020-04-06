@@ -2,12 +2,6 @@ import requests
 from pprint import pprint
 
 
-group_id = 1264
-course_id = 165
-login = input('Login: ')
-password = input('Password: ')
-
-
 def auth(s):
     auth = s.post('https://passport.yandex.ru/passport?mode=auth',
                   data={'login': login, 'passwd': password})
@@ -46,7 +40,13 @@ def get_lesson_info(s, lesson_id):
     return lesson_info
 
 
+group_id = 1264
+course_id = 165
+
 s = requests.Session()
+
+login = input('Login: ')
+password = input('Password: ')
 auth(s)
 
 lesson_ids = get_lesson_ids(s)
