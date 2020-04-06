@@ -1,8 +1,4 @@
-import requests
-from pprint import pprint
-
-
-def auth(s):
+def auth(s, login, password):
     auth = s.post('https://passport.yandex.ru/passport?mode=auth',
                   data={'login': login, 'passwd': password})
     if auth.url == 'https://passport.yandex.ru/profile':
@@ -13,7 +9,7 @@ def auth(s):
         raise Exception('Ошибка X')
 
 
-def get_lesson_ids(s):
+def get_lesson_ids(s, course_id, group_id):
     url = 'https://lyceum.yandex.ru/api/student/lessons'
     lessons = s.get(url, params={'groupId': group_id, 'courseId': course_id}).json()
     lesson_ids = list(lesson['id'] for lesson in lessons)
@@ -27,40 +23,38 @@ def get_material_id(s, lesson_id):
     return material_id
 
 
-def get_material_html(s, lesson_id, material_id):
+def get_material_html(s, lesson_id, group_id, material_id):
     url = f"https://lyceum.yandex.ru/api/student/materials/{material_id}"
     material = s.get(url, params={'groupId': group_id, 'lessonId': lesson_id}).json()
     material_html = material['detailedMaterial']['content']
     return material_html
 
 
-def get_lesson_info(s, lesson_id):
+def get_all_tasks(s, lesson_id, course_id):
     url = 'https://lyceum.yandex.ru/api/student/lessonTasks'
     lesson_info = s.get(url, params={'courseId': course_id, 'lessonId': lesson_id}).json()
     return lesson_info
 
 
-group_id = 1264
-course_id = 165
-
-s = requests.Session()
-
-login = input('Login: ')
-password = input('Password: ')
-auth(s)
-
-lesson_ids = get_lesson_ids(s)
-points = dict()
-
-for lesson_id in lesson_ids:
-    lesson_info = get_lesson_info(s, lesson_id)
-    for tasks in lesson_info:
-        n = len(tasks['tasks'])
-        type = tasks['type']
-        if type in points:
-            points[type] += n
-        else:
-            points[type] = n
+def get_lesson_info(s, lesson_id, group_id, course_id):
+    url = f'https://lyceum.yandex.ru/api/student/lessons/{lesson_id}'
+    lesson_info = s.get(url, params={'groupId': group_id, 'courseId': course_id}).json()
+    return lesson_info
 
 
-print(points)
+def get_solution(s, solution_id):
+    url = f'https://lyceum.yandex.ru/api/student/solutions/{solution_id}'
+    solution = s.get(url).json()
+    return solution
+
+
+def get_courses_groups_ids(s):
+    url = r'https://lyceum.yandex.ru/api/profile'
+    courses = s.get(url=url, params={'onlyActiveCourses': True,
+                                             'withCoursesSummary': True,
+                                             'withExpelled': True}).json()
+    courses = courses['coursesSummary']['student']
+    ids = list({'course_id': course['id'],
+                'group_id': course['group']['id']}
+               for course in courses)
+    return ids
