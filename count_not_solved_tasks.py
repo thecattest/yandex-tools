@@ -1,7 +1,5 @@
 import requests
-from pprint import pprint
 import datetime
-import time
 from methods import *
 
 

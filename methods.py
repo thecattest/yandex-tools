@@ -26,8 +26,14 @@ def get_lesson_ids(s, course_id, group_id):
 def get_material_id(s, lesson_id):
     url = 'https://lyceum.yandex.ru/api/materials'
     material_info = s.get(url, params={'lessonId': lesson_id}).json()
-    material_id = material_info[0]['id']
-    return material_id
+    if material_info:
+        material = material_info[0]
+        if material['type'] != 'textbook':
+            print(material_info)
+            raise ValueError
+        return material['id']
+    else:
+        return 0
 
 
 def get_material_html(s, lesson_id, group_id, material_id):
