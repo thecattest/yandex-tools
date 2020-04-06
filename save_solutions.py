@@ -17,14 +17,17 @@ def save_solutions(solutions, dir):
             type_path = os.path.join(lesson_path, type)
             os.mkdir(type_path)
             for title in solutions[lesson_title][type]:
-                solution_path = os.path.join(type_path, title)
-                code, encoding, byte = solutions[lesson_title][type][title]
-                if byte:
-                    with open(solution_path, 'wb') as file:
-                        file.write(code)
-                else:
-                    with open(solution_path, 'wt', encoding=encoding) as file:
-                        file.write(code)
+                try:
+                    solution_path = os.path.join(type_path, title)
+                    code, encoding, byte = solutions[lesson_title][type][title]
+                    if byte:
+                        with open(solution_path, 'wb') as file:
+                            file.write(code)
+                    else:
+                        with open(solution_path, 'wt', encoding=encoding) as file:
+                            file.write(code)
+                except Exception as e:
+                    print(e, solution_path, code, encoding, sep='\n', end='\n\n\n\n===================\n')
 
 
 s = requests.Session()
@@ -38,7 +41,7 @@ ids = get_courses_groups_ids(s)[1]
 course_id = ids['course_id']
 group_id = ids['group_id']
 
-lesson_ids = get_lesson_ids(s, course_id, group_id)[20:24]
+lesson_ids = get_lesson_ids(s, course_id, group_id)
 solutions = dict()
 titles = {'classwork': 'Классная работа',
           'homework': 'Домашняя работа',
@@ -47,8 +50,9 @@ titles = {'classwork': 'Классная работа',
           'individual-work': 'Самостоятельная работа'}
 symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
 
-for lesson_id in lesson_ids:
+for lesson_n, lesson_id in enumerate(lesson_ids):
     title = get_lesson_info(s, lesson_id, group_id, course_id)['title']
+    title = str(lesson_n) + '. ' + title
     solutions[title] = {}
     all_tasks = get_all_tasks(s, lesson_id, course_id)
 
