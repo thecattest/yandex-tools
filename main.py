@@ -21,7 +21,7 @@ def get_lesson_ids(s):
 
 
 def get_material_id(s, lesson_id):
-    url = 'https://lyceum.yandex.ru/api/materials?lessonId=1660'
+    url = 'https://lyceum.yandex.ru/api/materials'
     material_info = s.get(url, params={'lessonId': lesson_id}).json()
     material_id = material_info[0]['id']
     return material_id
