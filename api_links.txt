@@ -1,0 +1,7 @@
+https://lyceum.yandex.ru/api/student/lessonTasks?courseId=165&lessonId=1660		все задачи урока
+https://lyceum.yandex.ru/api/student/lessons/1660?courseId=165&groupId=1264		краткая информация об уроке
+https://lyceum.yandex.ru/api/student/tasks/12866?groupId=1264				задача урока
+
+https://lyceum.yandex.ru/api/student/lessons?courseId=165&groupId=1264			все уроки
+https://lyceum.yandex.ru/api/materials?lessonId=1660					получить id материалов
+https://lyceum.yandex.ru/api/student/materials/4108?groupId=1264&lessonId=1664		материал
