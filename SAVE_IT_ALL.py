@@ -6,7 +6,7 @@ from methods import *
 
 style = '<head><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/client.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/material.css"><link rel="stylesheet" type="text/css" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/code-mirror-editor.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/vendors.css"></head>'
 symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
-
+global n
 
 def save_lesson(lesson, lesson_title, dir):
     if not os.path.exists(dir):
@@ -26,12 +26,15 @@ def save_lesson(lesson, lesson_title, dir):
 
 
 def save_material(lesson_path, material):
-    try:
-        material = style + material.replace('\n', '')
-        with open(os.path.join(lesson_path, 'material.html'), 'wt', encoding='windows-1251') as html:
-            html.write(material)
-    except UnicodeEncodeError:
-        print("Материал не получилось сохранить из-за Unicode ошибки")
+    for enc in ['utf-8', 'windows-1252', 'windows-1250', 'ascii']:
+        try:
+            material = style + material.replace('\n', '')
+            with open(os.path.join(lesson_path, 'material.html'), 'wt', encoding=enc) as html:
+                html.write(material)
+            break
+        except UnicodeEncodeError:
+            print("Материал не получилось сохранить из-за Unicode ошибки")
+            print("Пробую другую кодировку...")
 
 
 def save_task_type(tasks, type_path):
@@ -49,8 +52,14 @@ def save_task(solution_path, task):
             with open(solution_path, 'wb') as file:
                 file.write(code)
         else:
-            with open(solution_path, 'wt', encoding=encoding) as file:
-                file.write(code)
+            for enc in ['utf-8', 'windows-1252', 'windows-1250', 'ascii']:
+                try:
+                    with open(solution_path, 'wt', encoding=enc) as file:
+                        file.write(code)
+                    break
+                except Exception:
+                    print("Материал не получилось сохранить из-за Unicode ошибки")
+                    print("Пробую другую кодировку...")
     except Exception as e:
         print(e, solution_path, code, encoding, sep='\n', end='\n\n\n\n===================\n')
 
@@ -67,16 +76,18 @@ def get_args():
 
 
 def get_ids():
+    global n
     ids = get_courses_groups_ids(s)[course]
     course_id = ids['course_id']
     group_id = ids['group_id']
     lesson_ids = get_lesson_ids(s, course_id, group_id)
+    n = len(lesson_ids)
     return course_id, group_id, lesson_ids
 
 
 def download_lesson(lesson_n, lesson_id):
     lesson_title = get_lesson_info(s, lesson_id, group_id, course_id)['title']
-    lesson_title = str(lesson_n) + '. ' + lesson_title
+    lesson_title = str(n - lesson_n) + '. ' + lesson_title
     for sym in symb:
         lesson_title = lesson_title.replace(sym, ' ')
 
