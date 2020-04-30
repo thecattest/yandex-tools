@@ -2,6 +2,7 @@ import requests
 from collections import defaultdict
 import sys
 
+
 assert sys.version_info >= (3, 8), "Нужен Python 3.8 или выше!"
 print('Для корректного вычисления рейтинга должны быть открыты все уроки!')
 login = input('Login: ')
@@ -33,7 +34,7 @@ courses = s.get(
 ).json()['coursesSummary']['student']
 
 for c in courses:
-    if 'Основы программирования на языке Python' in c['title']:
+    if 'Основы промышленного программирования | Д19' in c['title']:
         course = c
         break
 else:
@@ -67,8 +68,9 @@ rating = course['rating']
 rating_all = (primary_points_all['classwork'] / 100) * (10 / lessons_with_work_type['classwork']) \
              + (primary_points_all['homework'] / 100) * (10 / lessons_with_work_type['homework']) \
              + (primary_points_all['additional'] / 100) * (40 / lessons_with_work_type['additional']) \
-             + (primary_points_all['individual-work'] / 100) * (20 / lessons_with_work_type['individual-work']) \
              + (primary_points_all['control-work'] / 100) * (40 / lessons_with_work_type['control-work'])
+
+# + (primary_points_all['individual-work'] / 100) * (20 / lessons_with_work_type['individual-work']) \
 
 classwork_score_unchecked = (primary_points_unchecked['classwork'] / 100) * (10 / lessons_with_work_type['classwork'])
 homework_score_unchecked = (primary_points_unchecked['homework'] / 100) * (10 / lessons_with_work_type['homework'])
