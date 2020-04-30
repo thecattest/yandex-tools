@@ -1,30 +1,32 @@
-import requests
 from methods import *
+from collections import defaultdict
 
 
-s = requests.Session()
-
-login = input('Login: ')
-password = input('Password: ')
-course = int(input('Your course(1/2): ')) - 1
-auth(s, login, password)
-
-ids = get_courses_groups_ids(s)[course]
-course_id = ids['course_id']
-group_id = ids['group_id']
+s = get_and_auth()
+course_id, group_id, rating = get_course(s)
 
 lesson_ids = get_lesson_ids(s, course_id, group_id)
-points = dict()
+tasks_number = defaultdict(int)
+scores = defaultdict(int)
+
 
 for lesson_id in lesson_ids:
     lesson_info = get_all_tasks(s, lesson_id, course_id)
-    for tasks in lesson_info:
-        n = len(tasks['tasks'])
-        type = tasks['type']
-        if type in points:
-            points[type] += n
-        else:
-            points[type] = n
+    for task_group in lesson_info:
+        for task in task_group['tasks']:
+            type = task['tag']['type']
+            score = task['scoreMax']
+            tasks_number[type] += 1
+            scores[type] += score
 
+tasks_number['control-work'] += tasks_number['additional-3']
+del tasks_number['additional-3']
+scores['control-work'] += scores['additional-3']
+del scores['additional-3']
 
-print(points)
+print("=========\n")
+print("Количество задач\n")
+print(*list(f"{titles[key]}:\t{item}" for key, item in tasks_number.items()), sep='\n')
+print("=========\n")
+print("Первичные баллы\n")
+print(*list(f"{titles[key]}:\t{item}" for key, item in scores.items()), sep='\n')

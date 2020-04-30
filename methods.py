@@ -5,8 +5,8 @@ import requests
 titles = {'classwork': 'Классная работа',
           'homework': 'Домашняя работа',
           'additional': 'Дополнительные задачи',
-          'additional-3': 'Дополнительные задачи',
-          'control-work': 'Контрольная',
+          'additional-3': 'Какие-то additional-3...',
+          'control-work': 'Контрольная работа',
           'individual-work': 'Самостоятельная работа'}
 
 
