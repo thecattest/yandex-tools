@@ -1,7 +1,5 @@
-import requests
-import os
-
 from methods import *
+import os
 
 
 style = '<head><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/client.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/material.css"><link rel="stylesheet" type="text/css" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/code-mirror-editor.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/vendors.css"></head>'
@@ -64,22 +62,17 @@ def save_task(solution_path, task):
         print(e, solution_path, code, encoding, sep='\n', end='\n\n\n\n===================\n')
 
 
-def get_args():
-    login = input('Login: ')
-    password = input('Password: ')
-    course = int(input('Your course(1/2): ')) - 1
+def get_dir():
     dir = input('Директория для сохранения решений: ')
     for sym in symb:
         dir = dir.replace(sym, ' ')
     print('(пожалуйста будьте sure что папки не существует или она пустая, \nа иначе я за себя не ручаюсь)')
-    return login, password, course, dir
+    return dir
 
 
 def get_ids():
-    global n
-    ids = get_courses_groups_ids(s)[course]
-    course_id = ids['course_id']
-    group_id = ids['group_id']
+    global n, s
+    course_id, group_id, rating = get_course(s)
     lesson_ids = get_lesson_ids(s, course_id, group_id)
     n = len(lesson_ids)
     return course_id, group_id, lesson_ids
@@ -138,14 +131,11 @@ def download_task(lesson, task, type_title):
     return lesson
 
 
-s = requests.Session()
-login, password, course, dir = get_args()
-auth(s, login, password)
-
+s = get_and_auth()
+dir = get_dir()
 course_id, group_id, lesson_ids = get_ids()
 
 for lesson_n, lesson_id in enumerate(lesson_ids):
-
     lesson, lesson_title = download_lesson(lesson_n, lesson_id)
 
     try:
