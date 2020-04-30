@@ -74,6 +74,12 @@ def get_solution(s, solution_id):
     return solution
 
 
+def get_notifications(s):
+    url = 'https://lyceum.yandex.ru/api/notifications'
+    notifications = s.get(url).json()
+    return notifications
+
+
 def get_courses_groups_ids(s):
     url = r'https://lyceum.yandex.ru/api/profile'
     courses = s.get(url=url, params={'onlyActiveCourses': True,
