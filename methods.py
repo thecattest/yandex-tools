@@ -1,6 +1,11 @@
+from getpass import getpass
+import requests
+
+
 titles = {'classwork': 'Классная работа',
           'homework': 'Домашняя работа',
           'additional': 'Дополнительные задачи',
+          'additional-3': 'Дополнительные задачи',
           'control-work': 'Контрольная',
           'individual-work': 'Самостоятельная работа'}
 
@@ -14,6 +19,14 @@ def auth(s, login, password):
         if 'Неправильный' in auth.text:
             raise Exception('Неправильные логин или пароль')
         raise Exception('Ошибка X')
+
+
+def get_and_auth():
+    login = input('Login: ')
+    password = getpass()
+    s = requests.Session()
+    auth(s, login, password)
+    return s
 
 
 def get_lesson_ids(s, course_id, group_id):
@@ -64,10 +77,24 @@ def get_solution(s, solution_id):
 def get_courses_groups_ids(s):
     url = r'https://lyceum.yandex.ru/api/profile'
     courses = s.get(url=url, params={'onlyActiveCourses': True,
-                                             'withCoursesSummary': True,
-                                             'withExpelled': True}).json()
+                                     'withCoursesSummary': True,
+                                     'withExpelled': True}).json()
     courses = courses['coursesSummary']['student']
-    ids = list({'course_id': course['id'],
+    ids = list({'title': course['title'],
+                'rating': course['rating'],
+                'course_id': course['id'],
                 'group_id': course['group']['id']}
                for course in courses)
     return ids
+
+
+def get_course(s):
+    courses = get_courses_groups_ids(s)
+    print("\nВыберите курс")
+    print(*list(f"{course['title']} - {n}" for n, course in enumerate(courses)), sep='\n')
+    n = input()
+    while not (n.isdigit() and -1 < int(n) < len(courses)):
+        print("Ошибка. Введите только число")
+        n = input()
+    course = courses[int(n)]
+    return course['course_id'], course['group_id'], course['rating']
