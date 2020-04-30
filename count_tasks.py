@@ -30,3 +30,5 @@ print(*list(f"{titles[key]}:\t{item}" for key, item in tasks_number.items()), se
 print("=========\n")
 print("Первичные баллы\n")
 print(*list(f"{titles[key]}:\t{item}" for key, item in scores.items()), sep='\n')
+
+input('Жмякай Enter')
