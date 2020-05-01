@@ -6,7 +6,7 @@ from methods import *
 assert sys.version_info >= (3, 8), "Нужен Python 3.8 или выше!"
 
 s = get_and_auth()
-course_id, group_id, rating = get_course(s)
+course_id, group_id, rating = get_course(s, with_rating=True)
 lesson_ids = get_lesson_ids(s, course_id, group_id)
 
 primary_points_unchecked = defaultdict(int)

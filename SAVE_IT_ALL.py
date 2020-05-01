@@ -72,7 +72,7 @@ def get_dir():
 
 def get_ids():
     global n, s
-    course_id, group_id, rating = get_course(s)
+    course_id, group_id = get_course(s)
     lesson_ids = get_lesson_ids(s, course_id, group_id)
     n = len(lesson_ids)
     return course_id, group_id, lesson_ids

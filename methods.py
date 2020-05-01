@@ -102,7 +102,7 @@ def get_courses_groups_ids(s):
     return ids
 
 
-def get_course(s):
+def get_course(s, with_rating=False):
     courses = get_courses_groups_ids(s)
     print("Выберите курс")
     print(*list(f"{course['title']} - {n}" for n, course in enumerate(courses)), sep='\n')
@@ -112,4 +112,7 @@ def get_course(s):
         n = input()
     print('===========\n')
     course = courses[int(n)]
-    return course['course_id'], course['group_id'], course['rating']
+    if with_rating:
+        return course['course_id'], course['group_id'], course['rating']
+    else:
+        return course['course_id'], course['group_id']

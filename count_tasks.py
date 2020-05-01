@@ -3,7 +3,7 @@ from collections import defaultdict
 
 
 s = get_and_auth()
-course_id, group_id, rating = get_course(s)
+course_id, group_id = get_course(s)
 
 lesson_ids = get_lesson_ids(s, course_id, group_id)
 tasks_number = defaultdict(int)
