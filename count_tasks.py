@@ -24,11 +24,11 @@ del tasks_number['additional-3']
 scores['control-work'] += scores['additional-3']
 del scores['additional-3']
 
-print("=========\n")
 print("Количество задач\n")
 print(*list(f"{titles[key]}:\t{item}" for key, item in tasks_number.items()), sep='\n')
 print("=========\n")
 print("Первичные баллы\n")
 print(*list(f"{titles[key]}:\t{item}" for key, item in scores.items()), sep='\n')
 
+print()
 input('Жмякай Enter')

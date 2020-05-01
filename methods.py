@@ -1,4 +1,3 @@
-from getpass import getpass
 import requests
 
 
@@ -15,6 +14,7 @@ def auth(s, login, password):
                   data={'login': login, 'passwd': password})
     if auth.url == 'https://passport.yandex.ru/profile':
         print('Авторизация прошла успешно')
+        print('===========\n')
     else:
         if 'Неправильный' in auth.text:
             raise Exception('Неправильные логин или пароль')
@@ -22,8 +22,16 @@ def auth(s, login, password):
 
 
 def get_and_auth():
-    login = input('Login: ')
-    password = getpass()
+    try:
+        with open('credentials.txt') as file:
+            login, password = file.read().split()
+    except FileNotFoundError:
+        print("Файл с логином и паролем не найден.\n"
+              "Создайте файл 'credentials.txt' и сохраните в нем логин и пароль, разделённые пробелом.\n"
+              "Так, во-первых, вам не придётся каждый раз его вводить.\n"
+              "Во-вторых, даже если рядом и будет кто-то стоять, ваши данные в безопасности.\n"
+              "Файл добавлен в .gitignore, так что с ним точно ничего не случится.")
+        exit(1)
     s = requests.Session()
     auth(s, login, password)
     return s
@@ -96,11 +104,12 @@ def get_courses_groups_ids(s):
 
 def get_course(s):
     courses = get_courses_groups_ids(s)
-    print("\nВыберите курс")
+    print("Выберите курс")
     print(*list(f"{course['title']} - {n}" for n, course in enumerate(courses)), sep='\n')
     n = input()
     while not (n.isdigit() and -1 < int(n) < len(courses)):
         print("Ошибка. Введите только число")
         n = input()
+    print('===========\n')
     course = courses[int(n)]
     return course['course_id'], course['group_id'], course['rating']

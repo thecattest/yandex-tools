@@ -27,7 +27,7 @@ additional_score_unchecked = (primary_points_unchecked['additional'] / 100) * (4
 
 impulse_score = classwork_score_unchecked + homework_score_unchecked + additional_score_unchecked
 
-print("==============")
+
 print('Непроверенные задачи:')
 print(f"Классные задачи:\t{primary_points_unchecked['classwork']:.2f} {classwork_score_unchecked:.2f}")
 print(f"Домашние задачи:\t{primary_points_unchecked['homework']:.2f} {homework_score_unchecked:.2f}")
@@ -38,4 +38,5 @@ print('--------------------------')
 print(f'Баллы без проверки:\t{rating:.2f}')
 print(f'Баллы для проверки:\t{impulse_score}')
 print(f'Баллы с проверкой:\t{rating + impulse_score:.2f}')
+print()
 input('Жмякай Enter')

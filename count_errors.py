@@ -13,11 +13,10 @@ try:
                 error = one['objectData']['verdict']
                 errors[error] = errors.get(error, 0) + 1
 
-    print('===========\n')
     for one in sorted(errors.items(), reverse=True, key=lambda x: x[1]):
         print(f"{one[0]}\t{one[1]}")
 except IndexError as e:
     print(e)
     print(type(e))
-print('\n')
+print()
 input('Жмякай Enter')
