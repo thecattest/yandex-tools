@@ -1,7 +1,7 @@
 from methods import *
 
 
-def search_tasks(s, lessons, search_part):
+def search_tasks(lessons, search_part):
     found = []
     search_part = search_part.lower()
 
@@ -17,11 +17,13 @@ def search_tasks(s, lessons, search_part):
     return found
 
 
-def get_all_lessons(s, lesson_ids, course_id, group_id):
+def prepare(s, course_id, group_id):
     lessons = []
-    print("Получаю информацию об уроках, это занимает примерно 20 секунд...")
-    for lesson_id in lesson_ids:
-        lesson_title = get_lesson_info(s, lesson_id, group_id, course_id)['title']
+    print("Получаю информацию об уроках, это занимает примерно 5-10 секунд...")
+    lessons_info = get_all_lessons(s, course_id, group_id)
+    for lesson in lessons_info:
+        lesson_title = lesson['title']
+        lesson_id = lesson['id']
         tasks = get_all_tasks(s, lesson_id, course_id)
         lessons.append([lesson_title, tasks])
     print("Закончил")
@@ -32,16 +34,15 @@ def get_all_lessons(s, lesson_ids, course_id, group_id):
 if __name__ == '__main__':
     s = get_and_auth()
     course_id, group_id = get_course(s)
-    lesson_ids = get_lesson_ids(s, course_id, group_id)
 
-    lessons = get_all_lessons(s, lesson_ids, course_id, group_id)
+    lessons = prepare(s, course_id, group_id)
 
     print(r'Для остановки ввода введите \\')
     print("Часть названия задачи, которую нужно найти: ")
     search_part = input()
 
     while search_part != r'\\':
-        fd = search_tasks(s, lessons, search_part)
+        fd = search_tasks(lessons, search_part)
         if not fd:
             print('Не удалось найти задачу')
         else:
