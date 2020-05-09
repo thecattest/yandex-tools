@@ -71,6 +71,12 @@ def get_all_tasks(s, lesson_id, course_id):
     return lesson_info
 
 
+def get_task(s, task_id, group_id):
+    url = f'https://lyceum.yandex.ru/api/student/tasks/{task_id}'
+    task = s.get(url, params={'groupId': group_id}).json()
+    return task
+
+
 def get_lesson_info(s, lesson_id, group_id, course_id):
     url = f'https://lyceum.yandex.ru/api/student/lessons/{lesson_id}'
     lesson_info = s.get(url, params={'groupId': group_id, 'courseId': course_id}).json()
@@ -78,7 +84,7 @@ def get_lesson_info(s, lesson_id, group_id, course_id):
 
 
 def get_all_lessons(s, course_id, group_id):
-    url = 'https://lyceum.yandex.ru/api/student/lessons?courseId=&groupId=group_id'
+    url = 'https://lyceum.yandex.ru/api/student/lessons'
     params = {'courseId': course_id,
               'groupId': group_id}
     lessons = s.get(url, params=params).json()
