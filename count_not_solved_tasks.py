@@ -12,7 +12,7 @@ statuses = set()
 for lesson in lessons:
     if lesson['msBeforeDeadline'] < 0:
         break
-    if lesson['type'] != 'normal':
+    if lesson['type'] != 'normal' or lesson['numPassed'] == lesson['numTasks']:
         continue
     lesson_id = lesson['id']
     tasks = get_all_tasks(s, lesson_id, course_id)
