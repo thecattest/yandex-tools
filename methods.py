@@ -5,8 +5,10 @@ from pprint import pprint
 titles = {'classwork': 'Классная работа',
           'homework': 'Домашняя работа',
           'additional': 'Дополнительные задачи',
-          'additional-3': 'Проект',
+          'additional-2': 'Дополнительные задачи 2 уровень',
+          'additional-3': 'Итоговая контрольная',
           'control-work': 'Контрольная работа',
+          'another': 'Другое',
           'individual-work': 'Самостоятельная работа'}
 
 

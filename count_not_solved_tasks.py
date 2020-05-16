@@ -24,9 +24,3 @@ for lesson in lessons:
             if solution is None or \
                     (not solution['score'] and solution['status']['type'] != 'review'):
                 print(f"{lesson['title']}: {task['title']}")
-
-ids = list(x[0] for x in statuses)
-if 1 in ids or 5 in ids:
-    print("\n===========\n\nВы обладаете довольно важной для меня информацией.\n"
-          "Пожалуйста, скопируйте следующую строку и отправьте её мне на почту vodopyanov999@gmail.com")
-    print(*sorted(list(statuses), key=lambda x: x[0]), sep=', ')

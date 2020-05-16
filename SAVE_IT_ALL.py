@@ -146,7 +146,7 @@ for lesson_n, lesson_id in enumerate(lesson_ids):
     try:
         print(f"Урок \"{lesson_title}\" сохранён")
     except UnicodeError:
-        print('unicode error, i dont know what to do', lesson_n)
+        print('unicode error, i don\'t know what to do', lesson_n)
 
 print('\n\n\n\nf r o m: https://github.com/ilya-vodopyanov/yandex-tools')
 
