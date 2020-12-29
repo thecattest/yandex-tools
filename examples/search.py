@@ -1,7 +1,7 @@
-from methods import *
+from yandex_lyceum_api import *
 
 
-def search_tasks(lessons, search_part):
+def search_tasks(lessons: list, search_part: str):
     found = []
     search_part = search_part.lower()
 
@@ -17,14 +17,15 @@ def search_tasks(lessons, search_part):
     return found
 
 
-def prepare(s, course_id, group_id):
+def prepare(user: User):
+    course_id, group_id = user.get_course()
     lessons = []
     print("Получаю информацию об уроках, это занимает примерно 5-10 секунд...")
-    lessons_info = get_all_lessons(s, course_id, group_id)
+    lessons_info = user.get_all_lessons(course_id, group_id)
     for lesson in lessons_info:
         lesson_title = lesson['title']
         lesson_id = lesson['id']
-        tasks = get_all_tasks(s, lesson_id, course_id)
+        tasks = user.get_all_tasks(lesson_id, course_id)
         lessons.append([lesson_title, tasks])
     print("Закончил")
     print("===========\n")
@@ -32,10 +33,9 @@ def prepare(s, course_id, group_id):
 
 
 if __name__ == '__main__':
-    s = get_and_auth()
-    course_id, group_id = get_course(s)
+    user = User().load_credentials().auth()
 
-    lessons = prepare(s, course_id, group_id)
+    lessons = prepare(user)
 
     print(r'Для остановки ввода введите \\')
     print("Часть названия задачи, которую нужно найти: ")

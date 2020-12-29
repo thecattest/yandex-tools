@@ -1,9 +1,8 @@
-from methods import *
+from yandex_lyceum_api import *
 
-
-s = get_and_auth()
-course_id, group_id = get_course(s)
-lessons = get_all_lessons(s, course_id, group_id)
+user = User().load_credentials().auth()
+course_id, group_id = user.get_course()
+lessons = user.get_all_lessons(course_id, group_id)
 
 print("Ваши нерешённые задачи или незачтённые задачи:\n")
 
@@ -15,7 +14,7 @@ for lesson in lessons:
     if lesson['type'] != 'normal' or lesson['numPassed'] == lesson['numTasks']:
         continue
     lesson_id = lesson['id']
-    tasks = get_all_tasks(s, lesson_id, course_id)
+    tasks = user.get_all_tasks(lesson_id, course_id)
     for task_group in tasks:
         for task in task_group['tasks']:
             solution = task['solution']
