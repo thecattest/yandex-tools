@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="yandex-lyceum-api-jag-k",
+    name="yandex-lyceum-api",
     version="0.0.1",
     author="Jag_k",
     author_email="me@jagk.ru",
@@ -16,6 +16,7 @@ setuptools.setup(
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: MacOS",
         "Operating System :: Microsoft :: Windows",
