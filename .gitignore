@@ -1,3 +1,5 @@
 __pycache__/
 .idea/
-/credentials.txt
+credentials.txt
+credentials.json
+venv/

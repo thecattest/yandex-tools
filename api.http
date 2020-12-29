@@ -1,0 +1,33 @@
+### Получить информацию о задачах урока
+GET https://lyceum.yandex.ru/api/student/lessonTasks?courseId={{COURSE_ID}}&lessonId={{LESSON_ID}}
+
+### Получить краткую инфу об уроке
+GET https://lyceum.yandex.ru/api/student/lessons/{{LESSON_ID}}?courseId={{COURSE_ID}}&groupId={{LESSON_ID}}
+
+### Получить задачу по её task id
+GET https://lyceum.yandex.ru/api/student/tasks/{{TASK_ID}}?groupId={{GROUP_ID}}
+
+### Получить все открытые уроки курса
+GET https://lyceum.yandex.ru/api/student/lessons?courseId=&groupId={{GROUP_ID}}
+
+### Получить id материалов урока
+GET https://lyceum.yandex.ru/api/materials?lessonId={{LESSON_ID}}
+
+### Получить содержимое и инф материала
+GET https://lyceum.yandex.ru/api/student/materials/{{LESSON_ID}}?groupId={{GROUP_ID}}&lessonId={{LESSON_ID}}
+
+### Получить все уведомления, хранящиеся на сервере (Сохраняются с первого открытия урока)
+GET https://lyceum.yandex.ru/api/notifications
+# Имеет параметр isRead (по умолчанию True), при передаче isRead=False
+# можно получить новые, непрочитаные уведомления
+
+### Получить информацию о решении задачи, включая нахождение файла решения задачи и код решения
+GET https://lyceum.yandex.ru/api/student/solutions/{{SOLUTION_ID}}
+
+### Получить информацию о профиле и о курсах, в которых юзер состоит.
+GET https://lyceum.yandex.ru/api/profile?withChildren=true&withCoursesSummary=true&withExpelled=true&withParents=true
+# Имеет дополнительный параметр `onlyActiveCourses`,
+# при передаче True в coursesSummary будут выведены только активные курсы. В инфо
+
+### То же самое, что и выше, но уже другого юзера. Работает в случае, если профиль доступен авторизовавшемуся
+GET https://lyceum.yandex.ru/api/profile/{{USER_ID}}withChildren=true&withCoursesSummary=true&withExpelled=true&withParents=true

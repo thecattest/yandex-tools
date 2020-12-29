@@ -1,10 +1,22 @@
-from methods import *
 import os
 
+from api import *
 
-style = '<head><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/client.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/material.css"><link rel="stylesheet" type="text/css" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/code-mirror-editor.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/vendors.css"></head>'
-symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
+# language=HTML
+style = '<head>' \
+        '<link rel="stylesheet"' \
+        ' href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/client.css">' \
+        '<link rel="stylesheet"' \
+        ' href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/material.css">' \
+        '<link rel="stylesheet"' \
+        ' href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/code-mirror-editor.css">' \
+        '<link rel="stylesheet"' \
+        ' href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/vendors.css">' \
+        '</head>'
+
+symb = r'/\:*?"<>|'
 global n
+
 
 def save_lesson(lesson, lesson_title, dir):
     if not os.path.exists(dir):
@@ -63,35 +75,35 @@ def save_task(solution_path, task):
 
 
 def get_dir():
-    dir = input('Директория для сохранения решений: ')
+    directory = input('Директория для сохранения решений: ')
     for sym in symb:
-        dir = dir.replace(sym, ' ')
-    print('(пожалуйста будьте sure что папки не существует или она пустая, \nа иначе я за себя не ручаюсь)')
-    return dir
+        directory = directory.replace(sym, ' ')
+    print('(пожалуйста будьте уверены что папки не существует или она пустая, \nа иначе я за себя не ручаюсь)')
+    return directory
 
 
 def get_ids():
-    global n, s
-    course_id, group_id = get_course(s)
-    lesson_ids = get_lesson_ids(s, course_id, group_id)
+    global n
+    course_id, group_id = user.get_course()
+    lesson_ids = user.get_lesson_ids(course_id, group_id)
     n = len(lesson_ids)
     return course_id, group_id, lesson_ids
 
 
 def download_lesson(lesson_n, lesson_id):
-    lesson_title = get_lesson_info(s, lesson_id, group_id, course_id)['title']
+    lesson_title = user.get_lesson_info(lesson_id, group_id, course_id)['title']
     lesson_title = str(n - lesson_n) + '. ' + lesson_title
     for sym in symb:
         lesson_title = lesson_title.replace(sym, ' ')
 
-    material_id = get_material_id(s, lesson_id)
+    material_id = user.get_material_id(lesson_id)
     if material_id:
-        material_html = get_material_html(s, lesson_id, group_id, material_id)
+        material_html = user.get_material_html(lesson_id, group_id, material_id)
     else:
         material_html = ''
 
     lesson = {'material': material_html, 'tasks': {}}
-    all_tasks = get_all_tasks(s, lesson_id, course_id)
+    all_tasks = user.get_all_tasks(lesson_id, course_id)
 
     for tasks_type in all_tasks:
         lesson = download_type(lesson, tasks_type)
@@ -101,7 +113,7 @@ def download_lesson(lesson_n, lesson_id):
 
 def download_type(lesson, tasks_type):
     type = tasks_type['type']
-    type_title = titles[type]
+    type_title = TITLES[type]
     lesson['tasks'][type_title] = dict()
 
     for task in tasks_type['tasks']:
@@ -112,7 +124,7 @@ def download_type(lesson, tasks_type):
 
 def download_task(lesson, task, type_title):
     if not task['solution'] is None:
-        task_solution = get_solution(s, task['solution']['id'])
+        task_solution = user.get_solution(task['solution']['id'])
         task_title = task['title']
         file = task_solution['file']
         if not file is None:
@@ -131,8 +143,8 @@ def download_task(lesson, task, type_title):
     return lesson
 
 
-s = get_and_auth()
-dir = get_dir()
+user = User().load_credentials().auth()
+directory = get_dir()
 course_id, group_id, lesson_ids = get_ids()
 
 for lesson_n, lesson_id in enumerate(lesson_ids):
@@ -142,7 +154,7 @@ for lesson_n, lesson_id in enumerate(lesson_ids):
         print(f"Урок \"{lesson_title}\" скачан")
     except UnicodeError:
         print('unicode error, i dont know what to do', lesson_n)
-    save_lesson(lesson, lesson_title, dir)
+    save_lesson(lesson, lesson_title, directory)
     try:
         print(f"Урок \"{lesson_title}\" сохранён")
     except UnicodeError:

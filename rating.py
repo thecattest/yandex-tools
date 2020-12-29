@@ -1,20 +1,17 @@
 from collections import defaultdict
-import sys
-from methods import *
 
+from api import *
 
-assert sys.version_info >= (3, 8), "Нужен Python 3.8 или выше!"
-
-s = get_and_auth()
-course_id, group_id, rating = get_course(s, with_rating=True)
-lesson_ids = get_lesson_ids(s, course_id, group_id)
+user = User().load_credentials().auth
+course_id, group_id, rating = user.get_course(with_rating=True)
+lesson_ids = user.get_lesson_ids(course_id, group_id)
 
 primary_points_unchecked = defaultdict(int)
 primary_points_all = defaultdict(int)
 lessons_with_work_type = defaultdict(int)
 
 for lesson_id in lesson_ids:
-    tasks_groups = get_all_tasks(s, lesson_id, course_id)
+    tasks_groups = user.get_all_tasks(lesson_id, course_id)
     for tasks_group in tasks_groups:
         lessons_with_work_type[tasks_group['type']] += 1
         for task in tasks_group['tasks']:
@@ -23,10 +20,10 @@ for lesson_id in lesson_ids:
 
 classwork_score_unchecked = (primary_points_unchecked['classwork'] / 100) * (10 / lessons_with_work_type['classwork'])
 homework_score_unchecked = (primary_points_unchecked['homework'] / 100) * (10 / lessons_with_work_type['homework'])
-additional_score_unchecked = (primary_points_unchecked['additional'] / 100) * (40 / lessons_with_work_type['additional'])
+additional_score_unchecked = (primary_points_unchecked['additional'] / 100) * (
+            40 / lessons_with_work_type['additional'])
 
 impulse_score = classwork_score_unchecked + homework_score_unchecked + additional_score_unchecked
-
 
 print('Непроверенные задачи:')
 print(f"Классные задачи:\t{primary_points_unchecked['classwork']:.2f} {classwork_score_unchecked:.2f}")

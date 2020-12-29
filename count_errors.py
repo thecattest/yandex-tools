@@ -1,17 +1,15 @@
-from methods import *
-
+from api import *
 
 try:
-    s = get_and_auth()
+    user = User().load_credentials().auth()
 
-    notifications = get_notifications(s)
+    notifications = user.get_notifications()
     errors = dict()
     for one_id in notifications['notificationMap']:
         one = notifications['notificationMap'][one_id]
-        if one['type'] == "submission-checked":
-            if one['objectData']['verdict'] != 'ok':
-                error = one['objectData']['verdict']
-                errors[error] = errors.get(error, 0) + 1
+        if one['type'] == "submission-checked" and one['objectData']['verdict'] != 'ok':
+            error = one['objectData']['verdict']
+            errors[error] = errors.get(error, 0) + 1
 
     for one in sorted(errors.items(), reverse=True, key=lambda x: x[1]):
         print(f"{one[0]}\t{one[1]}")
