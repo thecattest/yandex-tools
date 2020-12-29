@@ -3,3 +3,7 @@ __pycache__/
 credentials.txt
 credentials.json
 venv/
+*.egg
+*.egg-info/
+build/
+dist/
