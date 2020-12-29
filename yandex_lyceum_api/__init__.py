@@ -208,15 +208,18 @@ class User:
     @auth_require
     def get_course(self, with_rating: bool = False):
         courses = self.get_courses_groups_ids()
-        print("Выберите курс:")
-        print(*(f"  {course['title']} - {n}" for n, course in enumerate(courses)), sep='\n')
-        n = input()
-        while not (n.isdigit() and -1 < int(n) < len(courses)):
-            print("Ошибка! Введите число от 0 до", len(courses) - 1, file=sys.stderr)
+        if courses:
+            print("Выберите курс:")
+            print(*(f"  {course['title']} - {n}" for n, course in enumerate(courses)), sep='\n')
             n = input()
-        print('===========\n')
-        course = courses[int(n)]
-        if with_rating:
-            return course['course_id'], course['group_id'], course['rating']
+            while not (n.isdigit() and -1 < int(n) < len(courses)):
+                print("Ошибка! Введите число от 0 до", len(courses) - 1, file=sys.stderr)
+                n = input()
+            print('===========\n')
+            course = courses[int(n)]
+            if with_rating:
+                return course['course_id'], course['group_id'], course['rating']
+            else:
+                return course['course_id'], course['group_id']
         else:
-            return course['course_id'], course['group_id']
+            raise ValueError("У Вас нет курсов")

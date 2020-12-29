@@ -1,4 +1,4 @@
-from api import *
+from yandex_lyceum_api import *
 
 try:
     user = User().load_credentials().auth()

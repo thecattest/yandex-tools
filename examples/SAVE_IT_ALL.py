@@ -1,6 +1,6 @@
 import os
 
-from api import *
+from yandex_lyceum_api import *
 
 # language=HTML
 style = '<head>' \

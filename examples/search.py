@@ -1,4 +1,4 @@
-from api import *
+from yandex_lyceum_api import *
 
 
 def search_tasks(lessons: list, search_part: str):

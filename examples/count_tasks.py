@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from api import User, TITLES
+from yandex_lyceum_api import User, TITLES
 
 user = User().load_credentials().auth()
 course_id, group_id = user.get_course()

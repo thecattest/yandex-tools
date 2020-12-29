@@ -1,4 +1,4 @@
-from api import *
+from yandex_lyceum_api import *
 
 user = User().load_credentials().auth()
 course_id, group_id = user.get_course()
