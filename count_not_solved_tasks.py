@@ -10,8 +10,14 @@ print("Ваши нерешённые задачи или незачтённые 
 statuses = set()
 
 for lesson in lessons:
-    if lesson['msBeforeDeadline'] < 0:
-        break
+
+    with_deadline = True
+    if lesson['msBeforeDeadline'] is not None:
+        if lesson['msBeforeDeadline'] < 0:
+            break
+    else:
+        with_deadline = False
+
     if lesson['type'] != 'normal' or lesson['numPassed'] == lesson['numTasks']:
         continue
     lesson_id = lesson['id']
@@ -23,4 +29,8 @@ for lesson in lessons:
                 statuses.add(tuple(solution['status'].values()))
             if solution is None or \
                     (not solution['score'] and solution['status']['type'] != 'review'):
-                print(f"{lesson['title']}: {task['title']}")
+
+                if with_deadline:
+                    print(f"{lesson['title']}: {task['title']}")
+                else:
+                    print(f"{lesson['title']}: {task['title']} (Без ограничений по времени)")
