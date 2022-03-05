@@ -1,6 +1,5 @@
 from methods import *
 
-
 try:
     s = get_and_auth()
 

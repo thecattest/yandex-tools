@@ -1,6 +1,4 @@
 import requests
-from pprint import pprint
-
 
 titles = {'classwork': 'Классная работа',
           'homework': 'Домашняя работа',
@@ -18,9 +16,9 @@ def auth(s, login, password):
     if auth.url == 'https://passport.yandex.ru/profile':
         print('Авторизация прошла успешно')
         print('===========\n')
+    elif 'Неправильный' in auth.text:
+        raise Exception('Неправильные логин или пароль')
     else:
-        if 'Неправильный' in auth.text:
-            raise Exception('Неправильные логин или пароль')
         raise Exception('Ошибка X')
 
 
@@ -43,66 +41,58 @@ def get_and_auth():
 def get_lesson_ids(s, course_id, group_id):
     url = 'https://lyceum.yandex.ru/api/student/lessons'
     lessons = s.get(url, params={'groupId': group_id, 'courseId': course_id}).json()
-    lesson_ids = list(lesson['id'] for lesson in lessons)
-    return lesson_ids
+    return [lesson['id'] for lesson in lessons]
 
 
 def get_material_id(s, lesson_id):
     url = 'https://lyceum.yandex.ru/api/materials'
-    material_info = s.get(url, params={'lessonId': lesson_id}).json()
-    if material_info:
-        material = material_info[0]
-        if material['type'] != 'textbook':
-            print(material_info)
-            raise ValueError
-        return material['id']
-    else:
+    if not (
+            material_info := s.get(url, params={'lessonId': lesson_id}).json()
+    ):
         return 0
+    material = material_info[0]
+    if material['type'] != 'textbook':
+        print(material_info)
+        raise ValueError
+    return material['id']
 
 
 def get_material_html(s, lesson_id, group_id, material_id):
     url = f"https://lyceum.yandex.ru/api/student/materials/{material_id}"
     material = s.get(url, params={'groupId': group_id, 'lessonId': lesson_id}).json()
-    material_html = material['detailedMaterial']['content']
-    return material_html
+    return material['detailedMaterial']['content']
 
 
 def get_all_tasks(s, lesson_id, course_id):
     url = 'https://lyceum.yandex.ru/api/student/lessonTasks'
-    lesson_info = s.get(url, params={'courseId': course_id, 'lessonId': lesson_id}).json()
-    return lesson_info
+    return s.get(url, params={'courseId': course_id, 'lessonId': lesson_id}).json()
 
 
 def get_task(s, task_id, group_id):
     url = f'https://lyceum.yandex.ru/api/student/tasks/{task_id}'
-    task = s.get(url, params={'groupId': group_id}).json()
-    return task
+    return s.get(url, params={'groupId': group_id}).json()
 
 
 def get_lesson_info(s, lesson_id, group_id, course_id):
     url = f'https://lyceum.yandex.ru/api/student/lessons/{lesson_id}'
-    lesson_info = s.get(url, params={'groupId': group_id, 'courseId': course_id}).json()
-    return lesson_info
+    return s.get(url, params={'groupId': group_id, 'courseId': course_id}).json()
 
 
 def get_all_lessons(s, course_id, group_id):
     url = 'https://lyceum.yandex.ru/api/student/lessons'
     params = {'courseId': course_id,
               'groupId': group_id}
-    lessons = s.get(url, params=params).json()
-    return lessons
+    return s.get(url, params=params).json()
 
 
 def get_solution(s, solution_id):
     url = f'https://lyceum.yandex.ru/api/student/solutions/{solution_id}'
-    solution = s.get(url).json()
-    return solution
+    return s.get(url).json()
 
 
 def get_notifications(s):
     url = 'https://lyceum.yandex.ru/api/notifications'
-    notifications = s.get(url).json()
-    return notifications
+    return s.get(url).json()
 
 
 def get_courses_groups_ids(s):
@@ -111,18 +101,20 @@ def get_courses_groups_ids(s):
                                      'withCoursesSummary': True,
                                      'withExpelled': True}).json()
     courses = courses['coursesSummary']['student']
-    ids = list({'title': course['title'],
-                'rating': course['rating'],
-                'course_id': course['id'],
-                'group_id': course['group']['id']}
-               for course in courses)
-    return ids
+    return [{'title': course['title'],
+             'rating': course['rating'],
+             'course_id': course['id'],
+             'group_id': course['group']['id']} for course in courses]
 
 
 def get_course(s, with_rating=False):
     courses = get_courses_groups_ids(s)
     print("Выберите курс")
-    print(*list(f"{course['title']} - {n}" for n, course in enumerate(courses)), sep='\n')
+    print(
+        *[f"{course['title']} - {n}" for n, course in enumerate(courses)],
+        sep='\n',
+    )
+
     n = input()
     while not (n.isdigit() and -1 < int(n) < len(courses)):
         print("Ошибка. Введите только число")
