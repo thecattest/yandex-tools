@@ -4,6 +4,8 @@ from methods import *
 
 style = '<head><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/client.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/material.css"><link rel="stylesheet" type="text/css" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/code-mirror-editor.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/vendors.css"></head>'
 symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
+article_start_html = '<div class="lesson-material"><div class="layout"><div class="layout__wrapper layout__wrapper_type_narrow layout__wrapper_fixed"><main class="layout__main"><div class="lesson-material__wrapper"></span><section class="lesson-material__content"><article class="material">'
+article_end_html = '</article></section></div></main></div></div></div>'
 global n
 
 
@@ -86,7 +88,7 @@ def download_lesson(lesson_n, lesson_id):
         lesson_title = lesson_title.replace(sym, ' ')
 
     if material_id := get_material_id(s, lesson_id):
-        material_html = get_material_html(s, lesson_id, group_id, material_id)
+        material_html = article_start_html + get_material_html(s, lesson_id, group_id, material_id) + article_end_html
     else:
         material_html = ''
 
