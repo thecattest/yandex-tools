@@ -1,6 +1,4 @@
 import requests
-from pprint import pprint
-
 
 titles = {'classwork': 'Классная работа',
           'homework': 'Домашняя работа',

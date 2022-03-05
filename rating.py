@@ -1,7 +1,7 @@
-from collections import defaultdict
 import sys
-from methods import *
+from collections import defaultdict
 
+from methods import *
 
 assert sys.version_info >= (3, 8), "Нужен Python 3.8 или выше!"
 
@@ -23,10 +23,10 @@ for lesson_id in lesson_ids:
 
 classwork_score_unchecked = (primary_points_unchecked['classwork'] / 100) * (10 / lessons_with_work_type['classwork'])
 homework_score_unchecked = (primary_points_unchecked['homework'] / 100) * (10 / lessons_with_work_type['homework'])
-additional_score_unchecked = (primary_points_unchecked['additional'] / 100) * (40 / lessons_with_work_type['additional'])
+additional_score_unchecked = (primary_points_unchecked['additional'] / 100) * (
+            40 / lessons_with_work_type['additional'])
 
 impulse_score = classwork_score_unchecked + homework_score_unchecked + additional_score_unchecked
-
 
 print('Непроверенные задачи:')
 print(f"Классные задачи:\t{primary_points_unchecked['classwork']:.2f} {classwork_score_unchecked:.2f}")

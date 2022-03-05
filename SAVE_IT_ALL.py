@@ -1,10 +1,11 @@
-from methods import *
 import os
 
+from methods import *
 
 style = '<head><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/client.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/material.css"><link rel="stylesheet" type="text/css" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/code-mirror-editor.css"><link rel="stylesheet" href="https://yastatic.net/s3/lyceum/frontend/static/40.0-rc-39c44ae1/desktop-ru/vendors.css"></head>'
 symb = ['/', '\\', ':', '*', '?', '"', '<', '>', '|']
 global n
+
 
 def save_lesson(lesson, lesson_title, dir):
     if not os.path.exists(dir):

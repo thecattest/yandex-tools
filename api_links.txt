@@ -5,13 +5,13 @@ course_id - id курса
 solution_id - id решения задачи
 user_id - id пользователя
 
-https://lyceum.yandex.ru/api/student/lessonTasks?courseId=course_id&lessonId=lesson_id		Получить информацию о задачах урока
-https://lyceum.yandex.ru/api/student/lessons/lesson_id?courseId=course_id&groupId=lesson_id		Получить краткую инфу об уроке
-https://lyceum.yandex.ru/api/student/tasks/task_id?groupId=group_id				Получить задачу по её task_id
+https://lyceum.yandex.ru/api/student/lessonTasks?courseId=course_id&lessonId=lesson_id        Получить информацию о задачах урока
+https://lyceum.yandex.ru/api/student/lessons/lesson_id?courseId=course_id&groupId=lesson_id        Получить краткую инфу об уроке
+https://lyceum.yandex.ru/api/student/tasks/task_id?groupId=group_id                Получить задачу по её task_id
 
-https://lyceum.yandex.ru/api/student/lessons?courseId=&groupId=group_id			Получить все открытые уроки курса
-https://lyceum.yandex.ru/api/materials?lessonId=lesson_id					Получить id материалов урока
-https://lyceum.yandex.ru/api/student/materials/lesson_id?groupId=group_id&lessonId=lesson_id		Получить содержимое и инф материала
+https://lyceum.yandex.ru/api/student/lessons?courseId=&groupId=group_id            Получить все открытые уроки курса
+https://lyceum.yandex.ru/api/materials?lessonId=lesson_id                    Получить id материалов урока
+https://lyceum.yandex.ru/api/student/materials/lesson_id?groupId=group_id&lessonId=lesson_id        Получить содержимое и инф материала
 
 https://lyceum.yandex.ru/api/notifications      Получить все уведомления, хранящиеся на сервере (Сохраняются с первого открытия
                                                 урока) Имеет параметр isRead (по умолчанию True), при передаче isRead=False 

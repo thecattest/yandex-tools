@@ -1,6 +1,5 @@
 from methods import *
 
-
 s = get_and_auth()
 course_id, group_id = get_course(s)
 lessons = get_all_lessons(s, course_id, group_id)
