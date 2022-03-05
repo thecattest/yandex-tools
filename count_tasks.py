@@ -21,15 +21,23 @@ for lesson_id in lesson_ids:
             scores[type] += score
 
 print("Количество задач\n")
-print(*list(f"{titles[key]}:\t{item}" for key, item in tasks_number.items()), sep='\n')
+print(
+    *[f"{titles[key]}:\t{item}" for key, item in tasks_number.items()],
+    sep='\n',
+)
+
 print("=========\n")
 
 print("Количество блоков\n")
-print(*list(f"{titles[key]}:\t{item}" for key, item in task_groups_number.items()), sep='\n')
+print(
+    *[f"{titles[key]}:\t{item}" for key, item in task_groups_number.items()],
+    sep='\n',
+)
+
 print("=========\n")
 
 print("Первичные баллы\n")
-print(*list(f"{titles[key]}:\t{item}" for key, item in scores.items()), sep='\n')
+print(*[f"{titles[key]}:\t{item}" for key, item in scores.items()], sep='\n')
 
 print()
 input('Жмякай Enter')

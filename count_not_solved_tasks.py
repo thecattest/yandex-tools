@@ -11,12 +11,11 @@ statuses = set()
 for lesson in lessons:
 
     with_deadline = True
-    if lesson['msBeforeDeadline'] is not None:
-        if lesson['msBeforeDeadline'] < 0:
-            break
-    else:
+    if lesson['msBeforeDeadline'] is None:
         with_deadline = False
 
+    elif lesson['msBeforeDeadline'] < 0:
+        break
     if lesson['type'] != 'normal' or lesson['numPassed'] == lesson['numTasks']:
         continue
     lesson_id = lesson['id']

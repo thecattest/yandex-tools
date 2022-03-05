@@ -81,12 +81,11 @@ def get_ids():
 
 def download_lesson(lesson_n, lesson_id):
     lesson_title = get_lesson_info(s, lesson_id, group_id, course_id)['title']
-    lesson_title = str(n - lesson_n) + '. ' + lesson_title
+    lesson_title = f'{str(n - lesson_n)}. {lesson_title}'
     for sym in symb:
         lesson_title = lesson_title.replace(sym, ' ')
 
-    material_id = get_material_id(s, lesson_id)
-    if material_id:
+    if material_id := get_material_id(s, lesson_id):
         material_html = get_material_html(s, lesson_id, group_id, material_id)
     else:
         material_html = ''
@@ -103,7 +102,7 @@ def download_lesson(lesson_n, lesson_id):
 def download_type(lesson, tasks_type):
     type = tasks_type['type']
     type_title = titles[type]
-    lesson['tasks'][type_title] = dict()
+    lesson['tasks'][type_title] = {}
 
     for task in tasks_type['tasks']:
         lesson = download_task(lesson, task, type_title)
@@ -112,11 +111,11 @@ def download_type(lesson, tasks_type):
 
 
 def download_task(lesson, task, type_title):
-    if not task['solution'] is None:
+    if task['solution'] is not None:
         task_solution = get_solution(s, task['solution']['id'])
         task_title = task['title']
         file = task_solution['file']
-        if not file is None:
+        if file is not None:
             encoding = file['encoding']
             file_type = os.path.split(file['name'])[1].split('.')[-1]
             if file_type == 'py':
@@ -127,7 +126,11 @@ def download_task(lesson, task, type_title):
                 byte = 1
             for sym in symb:
                 task_title = task_title.replace(sym, ' ')
-            lesson['tasks'][type_title][task_title + '.' + file_type] = [code, encoding, byte]
+            lesson['tasks'][type_title][f'{task_title}.{file_type}'] = [
+                code,
+                encoding,
+                byte,
+            ]
 
     return lesson
 
