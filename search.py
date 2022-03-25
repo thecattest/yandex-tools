@@ -1,5 +1,5 @@
 from methods import *
-
+from Errors import (ForbiddenError)
 
 def search_tasks(lessons, search_part):
     found = []
@@ -21,6 +21,8 @@ def prepare(s, course_id, group_id):
     lessons = []
     print("Получаю информацию об уроках, это занимает примерно 5-10 секунд...")
     lessons_info = get_all_lessons(s, course_id, group_id)
+    if lessons_info['code'] != 200:
+        raise ForbiddenError(lessons_info['code'])
     for lesson in lessons_info:
         lesson_title = lesson['title']
         lesson_id = lesson['id']
