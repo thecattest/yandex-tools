@@ -1,5 +1,5 @@
 from methods import *
-from Errors import (ForbiddenError)
+from Errors import (ForbiddenError, LostTaskError)
 
 
 def search_tasks(lessons, search_part):
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     while search_part != r'\\':
         fd = search_tasks(lessons, search_part)
         if not fd:
-            print('Не удалось найти задачу')
+            raise LostTaskError("Task can't found")
         else:
             for lesson_name, task_title_full, is_solved in fd:
                 print(f'Урок: "{lesson_name}", Задача: "{task_title_full}" '
