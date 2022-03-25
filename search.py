@@ -1,6 +1,7 @@
 from methods import *
 from Errors import (ForbiddenError)
 
+
 def search_tasks(lessons, search_part):
     found = []
     search_part = search_part.lower()
