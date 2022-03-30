@@ -14,7 +14,7 @@
 ## Контакты
 
 * email vodopyanov999@gmail.com
-* telegram [@thecattest](https://telegram.im/@thecattest)
+* telegram [@thecattest](https://t.me/thecattest)
 
 ## `SAVE_IT_ALL.py`
 
@@ -30,6 +30,9 @@
 	* А также .html файл с учебником, стилизованный ровно настолько, чтобы стать привычным и читабельным
 
 **по наличию их, собственно, в уроке**
+
+### [yandex-tools-docs](https://github.com/thecattest/yandex-tools-docs) by @fast-geek - новый скрипт для сохранения и просмотра документации.  
+С навигацией и более качественным сохранением материалов.
 
 ## `rating.py`
 
