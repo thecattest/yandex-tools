@@ -1,4 +1,5 @@
 from methods import *
+from Errors import (ForbiddenError, LostTaskError)
 
 
 def search_tasks(lessons, search_part):
@@ -22,6 +23,8 @@ def prepare(s, course_id, group_id):
     lessons = []
     print("Получаю информацию об уроках, это занимает примерно 5-10 секунд...")
     lessons_info = get_all_lessons(s, course_id, group_id)
+    if lessons_info['code'] != 200:
+        raise ForbiddenError(lessons_info['code'])
     for lesson in lessons_info:
         lesson_title = lesson['title']
         lesson_id = lesson['id']
@@ -45,7 +48,7 @@ if __name__ == '__main__':
     while search_part != r'\\':
         fd = search_tasks(lessons, search_part)
         if not fd:
-            print('Не удалось найти задачу')
+            raise LostTaskError("Task can't found")
         else:
             for lesson_name, task_title_full, is_solved in fd:
                 print(f'Урок: "{lesson_name}", Задача: "{task_title_full}" '

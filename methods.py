@@ -80,7 +80,8 @@ def get_lesson_info(s, lesson_id, group_id, course_id):
 def get_all_lessons(s, course_id, group_id):
     url = 'https://lyceum.yandex.ru/api/student/lessons'
     params = {'courseId': course_id,
-              'groupId': group_id}
+              'groupId': group_id,
+              'code': 200}
     return s.get(url, params=params).json()
 
 
