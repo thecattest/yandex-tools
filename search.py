@@ -10,7 +10,8 @@ def search_tasks(lessons, search_part):
             for task in tasks_group['tasks']:
                 task_title = task['title']
                 if search_part in task_title.lower():
-                    if not (sol := task['solution']):
+                    sol = task['solution']
+                    if not sol:
                         found.append((lesson_title, task_title, False))
                     else:
                         found.append((lesson_title, task_title, bool(sol['score'])))

@@ -46,9 +46,8 @@ def get_lesson_ids(s, course_id, group_id):
 
 def get_material_id(s, lesson_id):
     url = 'https://lyceum.yandex.ru/api/materials'
-    if not (
-            material_info := s.get(url, params={'lessonId': lesson_id}).json()
-    ):
+    material_info = s.get(url, params={'lessonId': lesson_id}).json()
+    if not material_info:
         return 0
     material = material_info[0]
     if material['type'] != 'textbook':

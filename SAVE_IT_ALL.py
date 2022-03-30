@@ -87,7 +87,8 @@ def download_lesson(lesson_n, lesson_id):
     for sym in symb:
         lesson_title = lesson_title.replace(sym, ' ')
 
-    if material_id := get_material_id(s, lesson_id):
+    material_id = get_material_id(s, lesson_id)
+    if material_id:
         material_html = article_start_html + get_material_html(s, lesson_id, group_id, material_id) + article_end_html
     else:
         material_html = ''

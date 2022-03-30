@@ -18,7 +18,8 @@ for lesson_id in lesson_ids:
     for tasks_group in tasks_groups:
         lessons_with_work_type[tasks_group['type']] += 1
         for task in tasks_group['tasks']:
-            if (sol := task['solution']) and sol['status']['type'] == 'review':
+            sol = task['solution']
+            if sol and sol['status']['type'] == 'review':
                 primary_points_unchecked[task['tag']['type']] += task['scoreMax']
 
 classwork_score_unchecked = (primary_points_unchecked['classwork'] / 100) * (10 / lessons_with_work_type['classwork'])
