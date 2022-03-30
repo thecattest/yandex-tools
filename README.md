@@ -31,7 +31,7 @@
 
 **по наличию их, собственно, в уроке**
 
-### [yandex-tools-docs](https://github.com/thecattest/yandex-tools-docs) by @fast-geek - новый скрипт для сохранения и просмотра документации.  
+### [yandex-tools-docs](https://github.com/thecattest/yandex-tools-docs) by [@fast-geek](https://github.com/fast-geek) - новый скрипт для сохранения и просмотра документации.  
 С навигацией и более качественным сохранением материалов.
 
 ## `rating.py`
